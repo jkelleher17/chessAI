@@ -29,7 +29,6 @@ def getSuccessors(board):
 		nextBoard.append((new,move))
 	return nextBoard
 
-
 def getAction(board):
 	def max_value(board, depth):
 		v = -1 * float('inf')
@@ -67,7 +66,6 @@ def getblackMove(board):
 	moves = list(board.legal_moves)
 	return moves[random.randint(0,len(moves))]
 
-
 def play():
 	board = chess.Board()
 	while not board.is_checkmate():
@@ -75,9 +73,9 @@ def play():
 		board.push(whiteMove)
 		print board, 'White moved'
 		raw_input()
+
 		blackMove = getblackMove(board)
 		board.push(blackMove)
-
 		print board, 'Black moved'
 		raw_input() 
 
