@@ -1,7 +1,7 @@
 import chess
 import random
 
-DEPTH = 1
+DEPTH = 2
 piece_values ={
 	chess.PAWN: 1,
 	chess.KNIGHT: 3,
