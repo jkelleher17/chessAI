@@ -237,3 +237,4 @@ def all_moves(state, chess_isEnemy,chess_isOwn,chess_isNothing, turnC):
                     m += 5
         n += 1
     return strOut
+

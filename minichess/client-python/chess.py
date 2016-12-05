@@ -1,6 +1,5 @@
 import random
 import time
-from moves import all_moves
 ##########################################################
 
 #board
@@ -24,216 +23,8 @@ timelimit = 0
 timecounter = 0
 timecache = 0
 
-
-class ChessGame(object):
-
-    def __init__(self):
-        self.state = list('kqbnrppppp..........PPPPPRNBQK')
-        self.turnN = 1
-        self.turnC = 'W'
-        self.mLog = []
-        self.mPlog = []
-        self.mlCounter = -1
-        self.mlFlag = 0
-        self.PtoQlog = []
-        self.timelimit = 0
-        self.timecounter = 0
-        self.timecache = 0
-
-    def chess_reset(self):
-        self.__init__()
-
-    def chess_boardGet(self):
-        strOut = ''
-        strOut += str(self.turnN)
-        strOut += ' '
-        strOut += self.turnC
-        strOut += '\n'
-        strOut += ''.join(self.state[0:5]) + '\n'
-        strOut += ''.join(self.state[5:10]) + '\n'
-        strOut += ''.join(self.state[10:15]) + '\n'
-        strOut += ''.join(self.state[15:20]) + '\n'
-        strOut += ''.join(self.state[20:25]) + '\n'
-        strOut += ''.join(self.state[25:30]) + '\n'
-        return strOut
-
-    def chess_boardSet(self, strIn):
-        mLog = []
-        mPlog = []
-        mlCounter = -1
-        mlFlag = 0
-        PtoQlog = []
-        strIn = str(strIn)
-        turnn, self.turnC, self.state[0:5], self.state[5:10], self.state[10:15], self.state[15:20], self.state[20:25], self.state[25:30] = list(strIn.split())
-        self.turnN = int(turnn)
-
-    def chess_winner(self):
-    # determine the winner of the current state of the game and return '?' or '=' or 'W' or 'B' - note that we are returning a character and not a string
-
-        if not 'k' in self.state:
-            return 'W'
-        elif not 'K' in self.state:
-            return 'B'
-        elif self.turnN > 40:
-            return '='
-        return '?'
-
-    def chess_isValid(self, intX, intY):
-        if intX < 0:
-            return False
-
-        elif intX > 4:
-            return False
-
-        if intY < 0:
-            return False
-
-        elif intY > 5:
-            return False
-
-        return True
-
-    def chess_isEnemy(self, strPiece):
-        return not self.chess_isNothing(strPiece) and not self.chess_isOwn(strPiece)
- 
-    def chess_isOwn(self,strPiece):
-        if self.chess_isNothing(strPiece):
-            return False
-        return (strPiece.isupper() and self.turnC == "W") or (strPiece.islower() and self.turnC == "B")
-
-    def chess_isNothing(self, strPiece):
-        return strPiece == '.'
-
-
-    def chess_eval(self):
-        values = {
-            'k': 100, 
-            'q': 50, 
-            'b': 20,
-            'r': 10,
-            'n': 5,
-            'p': 1
-            }
-        points = 0
-        for space in state:
-            if chess_isOwn(space):
-                points += values[space.lower()]
-            elif chess_isEnemy(space):
-                points -= values[space.lower()]
-        return points
-
-    def chess_moves(self):
-        return all_moves(self.state, self.chess_isEnemy,self.chess_isOwn,self.chess_isNothing, self.turnC)
-
-    def chess_move(self, strIn):
-    
-    # perform the supplied move (for example 'a5-a4\n') and update the state of the game / your internal variables accordingly - note that it advised to do a sanity check of the supplied move
-
-        column = ['a', 'b', 'c', 'd', 'e']
-        c = 0
-   
-
-        #separate the start and end position
-        start, end = list(strIn.split('-'))
-
-        #find the column for the start position
-        while column[c] != start[0]:
-            c += 1
-
-        #calculate the position in the array
-        Oposition =29 - (5 * (int(start[1]) - 1) + (4 - c))
-
-        #Check to make sure '.' is not selected
-        if self.chess_isNothing(self.state[Oposition]):
-            return False
-
-        #Check to make sure it is our own piece
-        if str(self.state[Oposition]).isupper() and turnC == 'B' and self.mlFlag == 0:
-            return False
-
-        if self.chess_isEnemy(self.state[Oposition]) and self.mlFlag == 0:
-            return False
-
-        #save the value of the selected peice
-        piece = self.state[Oposition]
-
-        #replace the start position with '.'
-        self.state[Oposition] = '.'
-
-        # find the column for the end position
-        c = 0
-        while column[c] != end[0]:
-            c += 1
-
-        # calculate the position in the array
-        position = 29 - (5 * (int(end[1]) - 1) + (4 - c))
-
-        if self.mlFlag == 0:
-            self.mLog.append(str(strIn))
-            self.mlCounter += 1
-            self.mPlog.append(str(self.state[position]))
-
-            #Check to see if replacement with queen is needed
-            if position < 5 and piece == 'P':
-                self.state[position] = 'Q'
-                PtoQlog.append(mlCounter)
-            elif position > 24 and piece == 'p':
-                self.state[position] = 'q'
-                self.PtoQlog.append(mlCounter)
-            else:
-                self.state[position] = piece
-
-            #change the turn number and turn color
-            if self.turnC == 'W':
-                self.turnC = 'B'
-            elif self.turnC == 'B':
-                self.turnC = 'W'
-                self.turnN += 1
-        else:
-            # Check to see if replacement with queen is needed
-            self.state[position] = piece
-            self.state[Oposition] = mPlog[mlCounter]
-
-            # Check to see if replacement with pawn is needed
-            length = len(PtoQlog)
-            for i in range(0, length):
-                if mlCounter == PtoQlog[i]:
-                    if piece.islower():
-                        self.state[position] = 'p'
-                        del PtoQlog[i]
-                    elif piece.isupper():
-                        self.state[position] = 'P'
-                        del PtoQlog[i]
-
-            # change the turn number and turn color
-            if self.turnC == 'W':
-                self.turnC = 'B'
-                self.turnN -= 1
-            elif self.turnC == 'B':
-                self.turnC = 'W'
-
-            self.mlFlag = 0
-            self.mLog.pop()
-            self.mPlog.pop()
-            self.mlCounter -= 1
-        
-
-
-
-
-
-
-
-"""
-
-
-OLD CODE
-
-"""
-
-
 def chess_reset():
-    # reset the self.state of the game / your internal variables - note that this function is highly dependent on your implementation
+    # reset the state of the game / your internal variables - note that this function is highly dependent on your implementation
 
     global turnN
     turnN = 1
@@ -270,7 +61,7 @@ def chess_boardGet():
     strOut += ''.join(state[15:20]) + '\n'
     strOut += ''.join(state[20:25]) + '\n'
     strOut += ''.join(state[25:30]) + '\n'
-
+    print strOut
 
     return strOut
 
@@ -333,6 +124,8 @@ def chess_isNothing(strPiece):
     return strPiece == '.'
 
 def chess_eval():
+    # with reference to the state of the game, return the the evaluation score of the side on move - note that positive means an advantage while negative means a disadvantage
+    piece = ['k', 'q', 'b', 'r', 'n', 'p']
     values = {
         'k': 100, 
         'q': 50, 
@@ -341,7 +134,13 @@ def chess_eval():
         'n': 5,
         'p': 1
         }
+
+    n = 0
+    point = 0
+    a = 1
+
     points = 0
+
     for space in state:
         if chess_isOwn(space):
             points += values[space.lower()]
@@ -349,12 +148,8 @@ def chess_eval():
             points -= values[space.lower()]
     return points
 
+
 def chess_moves():
-    return all_moves(state)
-
-
-
-def all_moves(state, chess_isEnemy,chess_isOwn,chess_isNothing, turnC):
     # with reference to the state of the game and return the possible moves - one example is given below - note that a move has exactly 6 characters
 
     strOut = []
@@ -627,15 +422,7 @@ def chess_movesEvaluated():
 
     return newlist
 
-
-
-def make_move(strIn, state):
-    pass
-
-
-
 def chess_move(strIn):
-    
     # perform the supplied move (for example 'a5-a4\n') and update the state of the game / your internal variables accordingly - note that it advised to do a sanity check of the supplied move
 
     global state
