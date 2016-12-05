@@ -4,25 +4,25 @@ from moves import all_moves
 ##########################################################
 
 #board
-state = []
-#turn count
-turnN = int
-#turn color
-turnC = ''
-#move made array
-mLog = []
-#hit log
-mPlog = []
-#number of the moves made
-mlCounter = -1
-#Undo flag
-mlFlag = 0
-#p transition to q
-PtoQlog = []
-#timelimit
-timelimit = 0
-timecounter = 0
-timecache = 0
+# state = []
+# #turn count
+# turnN = int
+# #turn color
+# turnC = ''
+# #move made array
+# mLog = []
+# #hit log
+# mPlog = []
+# #number of the moves made
+# mlCounter = -1
+# #Undo flag
+# mlFlag = 0
+# #p transition to q
+# PtoQlog = []
+# #timelimit
+# timelimit = 0
+# timecounter = 0
+# timecache = 0
 
 
 class ChessGame(object):
