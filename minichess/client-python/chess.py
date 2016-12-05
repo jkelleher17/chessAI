@@ -562,7 +562,7 @@ def chess_moveGreedy():
 
 def chess_moveNegamax(intDepth, intDuration):
     # perform a negamax move and return it - one example output is given below - note that you can call the the other functions in here
-    return chess_moveGreed()
+    return chess_moveGreedy()
 
 
 def chess_moveAlphabeta(intDepth, intDuration):
