@@ -61,6 +61,7 @@ def chess_boardGet():
     strOut += ''.join(state[15:20]) + '\n'
     strOut += ''.join(state[20:25]) + '\n'
     strOut += ''.join(state[25:30]) + '\n'
+    print strOut
 
     return strOut
 
@@ -93,7 +94,6 @@ def chess_winner():
         return 'B'
     elif turnN > 40:
         return '='
-
     return '?'
 
 def chess_isValid(intX, intY):
@@ -111,72 +111,43 @@ def chess_isValid(intX, intY):
 
     return True
 
+
 def chess_isEnemy(strPiece):
-    # with reference to the state of the game, return whether the provided argument is a piece from the side not on move - note that we could but should not use the other is() functions in here but probably
-
-    if turnC == 'B':
-        if strPiece.isupper():
-            return True
-    elif turnC == 'W':
-        if strPiece.islower():
-            return True
-    return False
-
+    return not chess_isNothing(strPiece) and not chess_isOwn(strPiece)
+ 
 def chess_isOwn(strPiece):
-    # with reference to the state of the game, return whether the provided argument is a piece from the side on move - note that we could but should not use the other is() functions in here but probably
-
-    if turnC == 'B':
-        if strPiece.islower():
-            return True
-    elif turnC == 'W':
-        if strPiece.isupper():
-            return True
-    return False
+    if chess_isNothing(strPiece):
+        return False
+    return (strPiece.isupper() and turnC == "W") or (strPiece.islower() and turnC == "B")
 
 def chess_isNothing(strPiece):
-    # return whether the provided argument is not a piece / is an empty field - note that we could but should not use the other is() functions in here but probably
-
-    if strPiece == '.':
-        return True
-    return False
+    return strPiece == '.'
 
 def chess_eval():
     # with reference to the state of the game, return the the evaluation score of the side on move - note that positive means an advantage while negative means a disadvantage
     piece = ['k', 'q', 'b', 'r', 'n', 'p']
+    values = {
+        'k': 100, 
+        'q': 50, 
+        'b': 20,
+        'r': 10,
+        'n': 5,
+        'p': 1
+        }
+
     n = 0
     point = 0
     a = 1
 
-    while n < 30:
-        if turnC == 'B':
-            a = -1
-        if state[n] == piece[5]:
-            point -= 1*a
-        elif state[n] == piece[5].upper():
-            point += 1*a
-        elif state[n] == piece[4]:
-            point -= 5*a
-        elif state[n] == piece[4].upper():
-            point += 5*a
-        elif state[n] == piece[3]:
-            point -= 10*a
-        elif state[n] == piece[3].upper():
-            point += 10*a
-        elif state[n] == piece[2]:
-            point -= 20*a
-        elif state[n] == piece[2].upper():
-            point += 20*a
-        elif state[n] == piece[1]:
-            point -= 50*a
-        elif state[n] == piece[1].upper():
-            point += 50*a
-        elif state[n] == piece[0]:
-            point -= 100*a
-        elif state[n] == piece[0].upper():
-            point += 100*a
-        n += 1
+    points = 0
 
-    return point
+    for space in state:
+        if chess_isOwn(space):
+            points += values[space.lower()]
+        elif chess_isEnemy(space):
+            points -= values[space.lower()]
+    return points
+
 
 def chess_moves():
     # with reference to the state of the game and return the possible moves - one example is given below - note that a move has exactly 6 characters
@@ -463,6 +434,7 @@ def chess_move(strIn):
     global mPlog
     column = ['a', 'b', 'c', 'd', 'e']
     c = 0
+    print state
 
     #separate the start and end position
     start, end = list(strIn.split('-'))
