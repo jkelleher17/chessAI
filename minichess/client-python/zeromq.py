@@ -9,6 +9,7 @@ import zmq # pip install pyzmq
 zeromq_boolRunning = False
 
 ##########################################################
+# c = ChessGame()
 
 def zeromq_start():
     global zeromq_boolRunning
@@ -88,7 +89,7 @@ def zeromq_start():
             jsonOut["strOut"] = chess_moveAlphabeta(jsonIn["intDepth"], jsonIn["intDuration"])
             
         elif jsonIn["strFunction"] == "chess_undo":
-            chess_undo()
+            c.chess_undo()
         
         socketHandle.send(json.dumps(jsonOut))
         
