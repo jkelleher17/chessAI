@@ -12,34 +12,34 @@ zeromq_boolRunning = False
 # c = ChessGame()
 
 def zeromq_start():
-    global zeromq_boolRunning
-    
-    # zeromq_boolRunning = True
-    
-    # contextHandle = zmq.Context()
-    # socketHandle = contextHandle.socket(zmq.PAIR)
-    
-    # socketHandle.bind("tcp://*:" + str(main_intZeromq))
-    jsonOut = {}
-    # jsonIn = None
-    jsonOut["strOut"] = main_strName
-    # socketHandle.send(json.dumps(jsonOut))
-    # socketHandle.send(json.dumps(jsonOut))
-    jsonOut["strOut"] = chess_boardGet()
-    # socketHandle.send(json.dumps(jsonOut))
-    counter = 0
-    while chess_winner() == "?": 
-        if counter >= 4:         
-            jsonOut["strOut"] = chess_moveAlphabeta(4, 200000)
-        else:
-            jsonOut["strOut"] = chess_moveRandom()
-            counter += 1
+    for x in xrange(10000):
+        # zeromq_boolRunning = True
+        # contextHandle = zmq.Context()
+        # socketHandle = contextHandle.socket(zmq.PAIR)
+        # socketHandle.bind("tcp://*:" + str(main_intZeromq))
+        if x != 0:
+            chess_reset()
+        jsonOut = {}
+        # jsonIn = None
+        jsonOut["strOut"] = main_strName
+        # socketHandle.send(json.dumps(jsonOut))
         # socketHandle.send(json.dumps(jsonOut))
         jsonOut["strOut"] = chess_boardGet()
         # socketHandle.send(json.dumps(jsonOut))
-        print chess_boardGet()
-    print chess_winner()
-    print getHistory()
+        counter = 0
+        while chess_winner() == "?": 
+            if counter >= 4:         
+                jsonOut["strOut"] = chess_moveAlphabeta(3, 200000)
+            else:
+                jsonOut["strOut"] = chess_moveRandom()
+                counter += 1
+            # socketHandle.send(json.dumps(jsonOut))
+            jsonOut["strOut"] = chess_boardGet()
+            # socketHandle.send(json.dumps(jsonOut))
+            # print chess_boardGet()
+        move_history = []
+        print chess_winner()
+        print getHistory()
 
     
     # socketHandle.send(json.dumps(jsonOut))

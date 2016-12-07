@@ -261,6 +261,7 @@ def chess_reset():
     # reset the state of the game / your internal variables - note that this function is highly dependent on your implementation
     board.setDepth(1)
     board.setPlayerColor('W')
+    board.move_history = []
     resetBoard = []
     resetBoard.append('kqbnr')
     resetBoard.append('ppppp')
@@ -697,14 +698,14 @@ def chess_moveAlphabeta(intDepth, intDuration):
     else:
         depth_start = intDepth
         turn_max_time = intDuration
-    print "Duration time = {}".format(intDuration)
-    print "Max time = {}".format(turn_max_time)
+    # print "Duration time = {}".format(intDuration)
+    # print "Max time = {}".format(turn_max_time)
 
     # prevent hash table from getting too big
     #zobrist.resetZobrist()
 
     while keep_searching:
-        print "Depth Start: {}".format(depth_start)
+        # print "Depth Start: {}".format(depth_start)
         for move in moves:
             chess_move(move)
             zobrist.updateZobristVal()
@@ -722,7 +723,7 @@ def chess_moveAlphabeta(intDepth, intDuration):
         if temp == 'None' or 0 < intDepth:
             # print "Temp = None"
             iterative_best = best
-            print "depth end: {}".format(depth_start)
+            # print "depth end: {}".format(depth_start)
             break
         depth_start += 1
 
