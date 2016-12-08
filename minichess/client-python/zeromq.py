@@ -53,7 +53,6 @@ class OpeningBookCalculator(object):
                         max_move  = move
             else:
                 max_move = chess_movesEvaluated()[0] 
-            print max_move
             chess_move(max_move)
             move = max_move
         else:
