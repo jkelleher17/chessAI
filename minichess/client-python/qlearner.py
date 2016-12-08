@@ -14,14 +14,13 @@ class QLearningAgent(object):
 		
 		return 0
 
-	def computeValueFromQValues(self, state):
-		pass
+	def computeValueFromQValues(self, state, reward):
+		if (state, action) in self.q_val:
+			self.q_val[(state, action)] += self.alpha*reward
+		else:
+			self.q_val[(state, action)] = self.alpha*reward
 
 	def computeActionFromQValues(self, state):
-		pass
+		
 
-	def getAction(self, state):
-		pass
-
-	def 
 
