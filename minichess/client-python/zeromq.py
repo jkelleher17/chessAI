@@ -700,23 +700,34 @@ class OpeningBookExploiter():
         #     elif len(self.state) == 0:
         #         chess_move('b2-b3\n')
         #         move = 'b2-b3\n'
-        if len(self.state) == 1:
-            # print self.state, len(self.state)
-            max_score = float("inf")
-            max_move = None
-            x = 0
-            temp_state = tuple(list(self.state))
-            for move in chess_movesEvaluated():
-                if self.q_value(temp_state,move) < max_score:
-                    max_score = self.q_value(temp_state,move)
-                    max_move  = move
-            chess_move(max_move)
-            move = max_move
-            # elif len(self.state) == 0:
-            #     chess_move('a2-b3\n')
-            #     move = 'b2-b3\n'
+        # if len(self.state) == 1:
+        #     # print self.state, len(self.state)
+        #     max_score = -float("inf")
+        #     max_move = None
+        #     x = 0
+        #     temp_state = tuple(list(self.state))
+        #     for move in chess_movesEvaluated():
+        #         if self.q_value(temp_state,move) > max_score:
+        #             max_score = self.q_value(temp_state,move)
+        #             max_move  = move
+        #     chess_move(max_move)
+        #     move = max_move
+        #     # elif len(self.state) == 0:
+        #     #     chess_move('a2-b3\n')
+        #     #     move = 'b2-b3\n'
+        if len(self.state) < 3:
+            if len(self.state) == 0:
+                move = 'c2-c3\n'
+                print move
+            elif len(self.state) == 1:
+                move = 'e5-e4\n'
+                print move
+            elif len(self.state)== 2:
+                move = 'd1-a4\n'
+            chess_move(move)
         else:
             move =  chess_moveAlphabeta(3,200000)
+        # print move, len(self.state)
         self.state = tuple(list(self.state) + [move.strip('\n')])
         return move
 
