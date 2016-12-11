@@ -9,7 +9,7 @@ main_strName = "brimmy" # CHANGE THIS - REQUIRED
 
 exec(open("chess.py").read())
 
-exec(open("old_zeromq.py").read())
+exec(open("zeromq.py").read())
 
 ##########################################################
 
