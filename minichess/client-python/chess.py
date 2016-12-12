@@ -1,5 +1,7 @@
 #####################################
-########## this is not our code ##### 
+########## This is not our code #########
+##### The original can be found here: ######
+####### https://github.com/sector46/teaching-minichess/blob/master/client-python/chess.py ########
 #####################################
 import random
 
