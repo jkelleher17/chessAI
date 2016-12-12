@@ -55,7 +55,7 @@ class OpeningBookCalculator(object):
                 max_move = chess_movesEvaluated()[0] 
             chess_move(max_move)
             move = max_move
-            self.epsilon = self.epsilon**1.001
+            self.epsilon = self.epsilon**1.0001
         else:
             move =  chess_moveAlphabeta(3,200000)
         self.state = tuple(list(self.state) + [move])
@@ -648,7 +648,7 @@ class OpeningBookExploiter():
         # print move, len(self.state)
         self.state = tuple(list(self.state) + [move.strip('\n')])
         return move
-        
+
 ###### End BozorgmirKelleher Code ############
 
 
