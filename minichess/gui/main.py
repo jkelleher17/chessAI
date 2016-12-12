@@ -7,7 +7,7 @@ main_strName = "brimmy" # CHANGE THIS - REQUIRED
 
 ##########################################################
 
-exec(open("../engine.py").read())
+exec(open("../client-python/chess.py").read())
 
 exec(open("zeromq.py").read())
 
